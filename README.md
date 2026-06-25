@@ -1,16 +1,16 @@
-# React + Vite
+# Job Tracking App - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Repository ini berisi *source code* frontend atau tampilan tatap muka dari aplikasi Job Tracking. Aplikasi ini dibuat menggunakan React untuk mempermudah mencatat, memantau, dan mengubah status lamaran kerja secara *real-time*.
 
-Currently, two official plugins are available:
+* **Backend Repository:** (https://github.com/username/job-tracking-api)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Fitur Utama
+* **Form Lamaran:** Halaman untuk menginputkan lamaran baru.
+* **Kanban Board / List Status:** Tampilan visual untuk memantau status lamaran (Tahap Administrasi, Interview, Accepted, Rejected).
+* **Ringkasan Grafik/Card:** Menampilkan total lamaran aktif langsung di halaman utama.
+* **Responsive Design:** Tampilan ramah pengguna baik di dekstop maupun HP.
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Tech Stack
+* React (Vite)
+* Tailwind CSS (Styling)
+* Axios (Untuk *fetching* data ke API Laravel)
