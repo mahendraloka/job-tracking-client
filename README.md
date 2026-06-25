@@ -2,7 +2,7 @@
 
 Repository ini berisi *source code* frontend atau tampilan tatap muka dari aplikasi Job Tracking. Aplikasi ini dibuat menggunakan React untuk mempermudah mencatat, memantau, dan mengubah status lamaran kerja secara *real-time*.
 
-* **Backend Repository:** (https://github.com/username/job-tracking-api)
+* **Backend Repository:** (https://github.com/mahendraloka/job-tracking-api)
 
 ## Fitur Utama
 * **Form Lamaran:** Halaman untuk menginputkan lamaran baru.
