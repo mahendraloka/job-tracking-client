@@ -9,7 +9,6 @@ import { ProtectedRoute, PublicRoute } from './components/ProtectedRoute';
 function App() {
   return (
     <Router>
-      {/* Pembungkus utama dengan latar belakang gelap total khas Tailwind v4 */}
       <div className="min-h-screen bg-slate-900 text-slate-100 antialiased flex flex-col justify-center">
         <Routes>
           

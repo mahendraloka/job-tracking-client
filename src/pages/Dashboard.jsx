@@ -8,14 +8,12 @@ function Dashboard() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   
-  // 1. STATE BARU: Untuk mengontrol pagination halaman aktif dan total loker
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalJobs, setTotalJobs] = useState(0);
 
   const [userName, setUserName] = useState('User');
 
-  // Fungsi penarik data dari API Laravel
   const fetchDashboardData = useCallback(async (pageNumber = 1) => {
     try {
       setLoading(true);
@@ -27,12 +25,11 @@ function Dashboard() {
       
       setStats(statsRes.data);
       
-      // Menyesuaikan penangkapan struktur object Paginate dari Laravel
       const paginationData = jobsRes.data.data; 
-      setJobs(paginationData.data);              // Array list lowongan (hanya 5 baris)
-      setCurrentPage(paginationData.current_page); // Halaman saat ini
-      setTotalPages(paginationData.last_page);     // Total halaman maksimal
-      setTotalJobs(paginationData.total);          // TOTAL KESELURUHAN LOKER DI APPLY
+      setJobs(paginationData.data);
+      setCurrentPage(paginationData.current_page);
+      setTotalPages(paginationData.last_page);
+      setTotalJobs(paginationData.total);
     } catch (err) {
       console.error("Gagal memuat data dashboard:", err.message || err);
     } finally {
@@ -40,7 +37,6 @@ function Dashboard() {
     }
   }, []);
 
-  // Memicu fetch data ulang setiap kali state currentPage berubah
   useEffect(() => {
     const savedName = localStorage.getItem('user_name');
     if (savedName) {
@@ -49,13 +45,11 @@ function Dashboard() {
     fetchDashboardData(currentPage);
   }, [currentPage, fetchDashboardData]);
 
-  // Fungsi untuk Menghapus Data (Delete)
   const handleDelete = async (id) => {
     if (window.confirm("Apakah Anda yakin ingin menghapus data lowongan ini?")) {
       try {
         await api.delete(`/job-applications/${id}`);
         alert("Data lowongan pekerjaan berhasil dihapus.");
-        // Ambil data ulang di halaman yang sedang aktif saat ini
         fetchDashboardData(currentPage); 
       } catch (err) {
         console.error("Gagal menghapus:", err);
@@ -88,35 +82,31 @@ function Dashboard() {
         </button>
       </div>
   
-      {/* STATS SECTION (Pastel Muted Tones, Bulat Nyaman, Tanpa Glow Palsu) */}
+      {/* STATS SECTION */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         
-        {/* Applied - Pastel Biru */}
         <div className="p-5 bg-[#1a1c23] border border-slate-800 rounded-2xl flex flex-col justify-between min-h-[110px]">
           <span className="text-xs font-bold text-blue-300 tracking-wide">Applied</span>
           <div className="text-4xl font-black text-white mt-2">{stats.applied}</div>
         </div>
   
-        {/* Interview - Pastel Kuning */}
         <div className="p-5 bg-[#1a1c23] border border-slate-800 rounded-2xl flex flex-col justify-between min-h-[110px]">
           <span className="text-xs font-bold text-amber-200 tracking-wide">Interview</span>
           <div className="text-4xl font-black text-white mt-2">{stats.interview}</div>
         </div>
   
-        {/* Ghosting - Pastel Ungu */}
         <div className="p-5 bg-[#1a1c23] border border-slate-800 rounded-2xl flex flex-col justify-between min-h-[110px]">
           <span className="text-xs font-bold text-purple-300 tracking-wide">Ghosting</span>
           <div className="text-4xl font-black text-white mt-2">{stats.ghosting}</div>
         </div>
   
-        {/* Rejected - Pastel Merah Muda */}
         <div className="p-5 bg-[#1a1c23] border border-slate-800 rounded-2xl flex flex-col justify-between min-h-[110px]">
           <span className="text-xs font-bold text-rose-300 tracking-wide">Rejected</span>
           <div className="text-4xl font-black text-white mt-2">{stats.rejected}</div>
         </div>
       </div>
   
-      {/* TABLE CONTAINER (Clean Minimalist List) */}
+      {/* TABLE CONTAINER */}
       <div className="bg-[#1a1c23] border border-slate-800 rounded-2xl p-6 shadow-sm">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
           <div>
@@ -187,7 +177,7 @@ function Dashboard() {
               </table>
             </div>
   
-            {/* CASUAL PAGINATION */}
+            {/* PAGINATION */}
             <div className="flex justify-between items-center border-t border-slate-800 mt-6 pt-4 text-xs text-slate-400 font-medium">
               <span>
                 Page {currentPage} of {totalPages}

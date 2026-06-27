@@ -2,7 +2,6 @@ import { useActionState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../utils/api';
 
-// 1. Fungsi Action (Logika pengiriman data ke Laravel 13)
 async function registerAction(prevState, formData) {
   try {
     const name = formData.get('name');
@@ -10,7 +9,6 @@ async function registerAction(prevState, formData) {
     const password = formData.get('password');
     const password_confirmation = formData.get('password_confirmation');
 
-    // Menembak endpoint Register milik Laravel 13
     const response = await api.post('/register', { 
       name, 
       email, 
@@ -18,13 +16,11 @@ async function registerAction(prevState, formData) {
       password_confirmation 
     });
 
-    // Simpan token ke localStorage dan arahkan user agar langsung masuk
     localStorage.setItem('token', response.data.access_token);
     localStorage.setItem('user_name', response.data.user.name);
     
     return { success: true, error: null, redirectTo: '/dashboard' };
   } catch (err) {
-    // Menangkap pesan error validasi dari Laravel
     return { 
       success: false, 
       error: err.response?.data?.message || 'Registrasi gagal. Silakan coba lagi.' 
@@ -35,7 +31,6 @@ async function registerAction(prevState, formData) {
 function Register() {
   const navigate = useNavigate();
   
-  // 2. Menggunakan Hook React 19 untuk mengelola status form otomatis
   const [state, formAction, isPending] = useActionState(async (prevState, formData) => {
     const result = await registerAction(prevState, formData);
     if (result.success && result.redirectTo) {

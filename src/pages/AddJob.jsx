@@ -2,7 +2,6 @@ import { useActionState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../utils/api';
 
-// 1. Fungsi Action untuk menembak API Laravel
 async function addJobAction(prevState, formData) {
   try {
     const company_name = formData.get('company_name');
@@ -13,7 +12,6 @@ async function addJobAction(prevState, formData) {
     const notes = formData.get('notes');
     const salary_expectation = formData.get('salary_expectation');
 
-    // Mengirim data ke rute resource/store Laravel
     await api.post('/job-applications', { 
         company_name, 
         job_title, 
@@ -36,11 +34,10 @@ async function addJobAction(prevState, formData) {
 function AddJob() {
   const navigate = useNavigate();
 
-  // 2. Menggunakan Hook React 19 untuk submit form otomatis
   const [state, formAction, isPending] = useActionState(async (prevState, formData) => {
     const result = await addJobAction(prevState, formData);
     if (result.success) {
-      navigate('/dashboard'); // Jika sukses, balikkan user ke Dashboard
+      navigate('/dashboard');
     }
     return result;
   }, null);

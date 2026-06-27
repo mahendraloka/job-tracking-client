@@ -8,7 +8,6 @@ const api = axios.create({
   },
 });
 
-// Otomatis menyuntikkan Token Sanctum ke setiap request jika user sudah login
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
@@ -20,17 +19,14 @@ api.interceptors.request.use((config) => {
     return Promise.reject(error);
 });
 
-// 2. Interceptor Response: Polisi pengaman jika token di browser ternyata palsu/hangus
 api.interceptors.response.use(
   (response) => {
     return response;
   },
   (error) => {
-    // Jika Laravel membalas dengan status 401 (Unauthorized/Token Tidak Valid)
     if (error.response && error.response.status === 401) {
-      localStorage.removeItem('token'); // Bersihkan token rusak dari browser
+      localStorage.removeItem('token');
       
-      // Paksa browser pindah ke halaman login jika saat ini tidak sedang di halaman login/register
       if (!window.location.pathname.includes('/login') && !window.location.pathname.includes('/register')) {
         window.location.href = '/login';
       }

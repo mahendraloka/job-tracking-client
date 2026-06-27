@@ -2,7 +2,7 @@ import { useEffect, useState, useActionState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import api from '../utils/api';
 
-// Fungsi Action untuk mengirimkan data perubahan ke Laravel via PUT method
+
 async function updateJobAction(id, formData) {
   try {
     const company_name = formData.get('company_name');
@@ -13,7 +13,6 @@ async function updateJobAction(id, formData) {
     const notes = formData.get('notes');
     const salary_expectation = formData.get('salary_expectation');
 
-    // Mengirimkan request PUT ke Laravel resource URL: /job-applications/{id}
     await api.put(`/job-applications/${id}`, {
       company_name,
       job_title,
@@ -35,11 +34,10 @@ async function updateJobAction(id, formData) {
 
 function EditJob() {
   const navigate = useNavigate();
-  const { id } = useParams(); // Mengambil ID lowongan dari URL browser
+  const { id } = useParams();
   const [initialLoading, setInitialLoading] = useState(true);
   const [fetchError, setFetchError] = useState(null);
 
-  // State internal form untuk menampung data lama dari database
   const [formData, setFormData] = useState({
     company_name: '',
     job_title: '',
@@ -50,7 +48,6 @@ function EditJob() {
     notes: ''
   });
 
-  // 1. Ambil data spesifik dari Laravel saat halaman pertama kali dibuka
   useEffect(() => {
     async function fetchJobDetail() {
       try {
@@ -62,7 +59,7 @@ function EditJob() {
           company_name: job.company_name || '',
           job_title: job.job_title || '',
           status: job.status || 'Applied',
-          applied_date: job.applied_date ? job.applied_date.substring(0, 10) : '', // Format YYYY-MM-DD untuk input date HTML
+          applied_date: job.applied_date ? job.applied_date.substring(0, 10) : '',
           job_url: job.job_url || '',
           salary_expectation: job.salary_expectation || '',
           notes: job.notes || ''
@@ -76,7 +73,6 @@ function EditJob() {
     fetchJobDetail();
   }, [id]);
 
-  // 2. Gunakan useActionState React 19 untuk menangani pengiriman form update
   const [state, formAction, isPending] = useActionState(async (prevState, fData) => {
     const result = await updateJobAction(id, fData);
     if (result.success) {
@@ -85,7 +81,6 @@ function EditJob() {
     return result;
   }, null);
 
-  // Handler untuk mendeteksi ketikan user di form agar nilai input bisa berubah (Controlled Components)
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -93,7 +88,6 @@ function EditJob() {
 
   if (initialLoading) {
     return (
-      // 🔄 PERBAIKAN: Menggunakan latar belakang #121318 agar tidak belang saat loading
       <div className="min-h-screen bg-[#121318] flex flex-col items-center justify-center gap-3 text-slate-400 text-sm antialiased">
         <div className="w-5 h-5 border-2 border-amber-200 border-t-transparent rounded-full animate-spin"></div>
         <p className="font-medium">Loading application details...</p>
@@ -103,7 +97,6 @@ function EditJob() {
   
   if (fetchError) {
     return (
-      // 🔄 PERBAIKAN: Menggunakan latar belakang #121318 dan kontainer #1a1c23 agar serasi dengan Dashboard
       <div className="min-h-screen bg-[#121318] text-[#f3f4f6] p-5 md:p-8 flex items-center justify-center font-sans antialiased">
         <div className="max-w-xl w-full bg-[#1a1c23] border border-slate-800 rounded-2xl p-6 text-center shadow-sm">
           <p className="text-rose-400 text-sm font-semibold mb-5">{fetchError}</p>
@@ -121,7 +114,7 @@ function EditJob() {
   return (
     <div className="min-h-screen bg-[#121318] text-[#f3f4f6] p-5 md:p-8 font-sans antialiased">
       
-      {/* HEADER SECTION - KEMBAR IDENTIK DENGAN ADDJOB */}
+      {/* HEADER SECTION */}
       <div className="max-w-xl mx-auto flex justify-between items-center border-b border-slate-800 pb-6 mb-8">
         <div>
           <h2 className="text-xl font-bold text-white tracking-tight">Edit Application</h2>
@@ -132,7 +125,7 @@ function EditJob() {
         </Link>
       </div>
   
-      {/* FORM CONTAINER - KEMBAR IDENTIK DENGAN ADDJOB */}
+      {/* FORM CONTAINER */}
       <div className="max-w-xl mx-auto bg-[#1a1c23] border border-slate-800 rounded-2xl p-6 shadow-sm">
         {state?.error && (
           <div className="mb-5 p-3 bg-rose-500/10 border border-rose-500/20 text-rose-300 text-xs font-semibold rounded-xl text-center">
